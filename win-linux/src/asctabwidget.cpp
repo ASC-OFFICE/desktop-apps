@@ -91,6 +91,14 @@ public:
     {
         return _data;
     }
+
+    CCefViewEditor * editor()
+    {
+        if ( _data->viewType() == cvwtEditor )
+            return dynamic_cast<CCefViewEditor *>(this);
+
+        return nullptr;
+    }
 private:
     CAscTabData * _data;
 };
@@ -997,10 +1005,38 @@ int CAscTabWidget::findModified(const QString& portalname)
 
     return -1;
 }
+
+int CAscTabWidget::findFragmented(const QString& portalname)
+{
+    wstring portal = portalname.toStdWString();
+    CAscTabData * doc;
+    CTabPanel * panel;
+    for (int i(tabBar()->count()); i-- > 0; ) {
+        panel = (CTabPanel *)widget(i);
+        doc = panel->data();
+
+        if ( !doc->closed() && doc->isViewType(cvwtEditor) &&
+                (portal.empty() || doc->url().find(portal) != wstring::npos) )
+        {
+            if ( ((CCefViewEditor *)panel->GetCefView())->CheckCloudCryptoNeedBuild() ) {
+                return i;
+            }
         }
     }
 
     return -1;
+}
+
+bool CAscTabWidget::isFragmented(int index)
+{
+    if (!(index < 0) && index < count()) {
+        CTabPanel * panel = (CTabPanel *)widget(index);
+        CAscTabData * doc = panel->data();
+
+        return !doc->closed() && doc->isViewType(cvwtEditor) && panel->editor()->CheckCloudCryptoNeedBuild();
+    }
+
+    return false;
 }
 
 void CAscTabWidget::setFullScreen(bool apply, int id)

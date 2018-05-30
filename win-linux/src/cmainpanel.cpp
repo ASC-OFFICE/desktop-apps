@@ -491,9 +491,10 @@ void CMainPanel::onTabChanged(int index)
 
 void CMainPanel::onTabCloseRequest(int index)
 {
-    if (trySaveDocument(index) == MODAL_RESULT_NO) {
-        m_pTabs->closeEditorByIndex(index, false);
-    }
+    if ( !m_pTabs->isFragmented(index) )
+        if (trySaveDocument(index) == MODAL_RESULT_NO) {
+            m_pTabs->closeEditorByIndex(index, false);
+        }
 }
 
 int CMainPanel::trySaveDocument(int index)
@@ -517,10 +518,7 @@ int CMainPanel::trySaveDocument(int index)
             m_pTabs->editorCloseRequest(index);
 
             QCefView * pView = (QCefView *)m_pTabs->widget(index);
-            NSEditorApi::CAscMenuEvent* pEvent = new NSEditorApi::CAscMenuEvent();
-
-            pEvent->m_nType = ASC_MENU_EVENT_TYPE_CEF_SAVE;
-            pView->GetCefView()->Apply(pEvent);
+            pView->GetCefView()->Apply( new CAscMenuEvent(ASC_MENU_EVENT_TYPE_CEF_SAVE) );
 
             modal_res = MODAL_RESULT_YES;
             break;}
@@ -961,6 +959,30 @@ void CMainPanel::onDocumentDownload(void * info)
 
     CAscDownloadFileInfo * pData = reinterpret_cast<CAscDownloadFileInfo *>(info);
     RELEASEINTERFACE(pData);
+}
+
+void CMainPanel::onDocumentIsFragmented(int id, bool isfragmented)
+{
+    int index = m_pTabs->tabIndexByView(id);
+
+    if ( isfragmented ) {
+        if ( !(index < 0) ) {
+            CMessage mess(TOP_NATIVE_WINDOW_HANDLE);
+            mess.setButtons({tr("Yes")+":default", tr("No"), tr("Cancel")});
+            int res = mess.warning("Document must be built. Continue?");
+
+            if ( res == MODAL_RESULT_CUSTOM + 0 ) {
+                QCefView * pView = (QCefView *)m_pTabs->widget(index);
+                pView->GetCefView()->Apply( new CAscMenuEvent(ASC_MENU_EVENT_TYPE_ENCRYPTED_CLOUD_BUILD) );
+            } else
+            if ( res == MODAL_RESULT_CUSTOM + 2 )
+                return;
+        }
+    }
+
+    if ( trySaveDocument(index) == MODAL_RESULT_NO ) {
+        m_pTabs->closeEditorByIndex(index, false);
+    }
 }
 
 void CMainPanel::loadStartPage()

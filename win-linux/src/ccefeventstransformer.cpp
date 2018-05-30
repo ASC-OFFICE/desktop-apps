@@ -101,13 +101,17 @@ void CCefEventsTransformer::OnEvent(QObject * target, NSEditorApi::CAscCefMenuEv
 //        QMetaObject::invokeMethod(target, "onLogout", Qt::QueuedConnection);
         break;}
 
-//    case ASC_MENU_EVENT_TYPE_CEF_JS_MESSAGE: { // deprecated
-//        NSEditorApi::CAscJSMessage * pData = (NSEditorApi::CAscJSMessage *)event->m_pData;
-//        QString cmd = QString::fromStdWString(pData->get_Name());
+    case ASC_MENU_EVENT_TYPE_CEF_JS_MESSAGE: { // deprecated
+        CAscJSMessage * pData = (CAscJSMessage *)event->m_pData;
+        QString cmd = QString::fromStdWString(pData->get_Name());
 //        if (cmd.compare("login") == 0) {
 //            QMetaObject::invokeMethod(pObjParent, "onLogin", Qt::QueuedConnection, Q_ARG(QString, QString::fromStdWString(pData->get_Value())));
 //        }
-//        break; }
+        if ( cmd == "IsNeedBuildCryptedFile" ) {
+            bool isFragmented = (pData->get_Value() == L"true") ? true : false;
+            QMetaObject::invokeMethod(target, "onDocumentIsFragmented", Qt::QueuedConnection, Q_ARG(int, event->get_SenderId()), Q_ARG(bool, isFragmented));
+        }
+        break; }
 
     case ASC_MENU_EVENT_TYPE_CEF_ONCLOSE: break;
     case ASC_MENU_EVENT_TYPE_CEF_ONBEFORECLOSE: break;
