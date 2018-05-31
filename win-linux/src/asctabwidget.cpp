@@ -95,7 +95,7 @@ public:
     CCefViewEditor * editor()
     {
         if ( _data->viewType() == cvwtEditor )
-            return dynamic_cast<CCefViewEditor *>(this);
+            return dynamic_cast<CCefViewEditor *>(this->GetCefView());
 
         return nullptr;
     }
