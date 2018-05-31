@@ -116,7 +116,7 @@ void CCefEventsTransformer::OnEvent(QObject * target, NSEditorApi::CAscCefMenuEv
         QMetaObject::invokeMethod(target, "onDocumentBuild", Qt::QueuedConnection, Q_ARG(int, event->get_SenderId()), Q_ARG(int, 0));
         break;
     case ASC_MENU_EVENT_TYPE_ENCRYPTED_CLOUD_BUILD_END_ERROR:
-        QMetaObject::invokeMethod(target, "onDocumentBuil", Qt::QueuedConnection, Q_ARG(int, event->get_SenderId()), Q_ARG(int, -1));
+        QMetaObject::invokeMethod(target, "onDocumentBuild", Qt::QueuedConnection, Q_ARG(int, event->get_SenderId()), Q_ARG(int, -1));
         break;
     case ASC_MENU_EVENT_TYPE_CEF_ONCLOSE: break;
     case ASC_MENU_EVENT_TYPE_CEF_ONBEFORECLOSE: break;
