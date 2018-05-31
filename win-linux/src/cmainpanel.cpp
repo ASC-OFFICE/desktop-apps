@@ -985,6 +985,18 @@ void CMainPanel::onDocumentIsFragmented(int id, bool isfragmented)
     }
 }
 
+void CMainPanel::onDocumentBuild(int vid, int error)
+{
+    int index = m_pTabs->tabIndexByView(vid);
+    if ( error == 0 ) {
+qDebug() << "server answer: document was built";
+        m_pTabs->closeEditorByIndex(index, false );
+    } else {
+//        ((CTabPanel *)m_pTabs->widget(index))->reuse()
+//        m_pTabs->applyDocumentSave(vid, true);
+    }
+}
+
 void CMainPanel::loadStartPage()
 {
     GET_REGISTRY_USER(_reg_user);

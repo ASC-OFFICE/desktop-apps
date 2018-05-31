@@ -122,7 +122,9 @@ public slots:
     void onDocumentSaveInnerRequest(int id);
     void onDocumentDownload(void * info);
     void onDocumentLoadFinished(int);
+
     void onDocumentIsFragmented(int, bool);
+    void onDocumentBuild(int, int);
 
     virtual void onDocumentPrint(void *);
     void onDialogSave(std::wstring sName, uint id);
