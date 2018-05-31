@@ -491,10 +491,13 @@ void CMainPanel::onTabChanged(int index)
 
 void CMainPanel::onTabCloseRequest(int index)
 {
-    if ( !m_pTabs->isFragmented(index) )
+    if ( !m_pTabs->isFragmented(index) ) {
         if (trySaveDocument(index) == MODAL_RESULT_NO) {
             m_pTabs->closeEditorByIndex(index, false);
         }
+    } else {
+        qDebug() << "close click: " << "document is fragmented";
+    }
 }
 
 int CMainPanel::trySaveDocument(int index)
@@ -963,6 +966,8 @@ void CMainPanel::onDocumentDownload(void * info)
 
 void CMainPanel::onDocumentIsFragmented(int id, bool isfragmented)
 {
+qDebug() << "server answer: " << "doc is fragmented " << isfragmented;
+
     int index = m_pTabs->tabIndexByView(id);
 
     if ( isfragmented ) {
@@ -972,8 +977,10 @@ void CMainPanel::onDocumentIsFragmented(int id, bool isfragmented)
             int res = mess.warning("Document must be built. Continue?");
 
             if ( res == MODAL_RESULT_CUSTOM + 0 ) {
+qDebug() << "send command to build document";
                 QCefView * pView = (QCefView *)m_pTabs->widget(index);
                 pView->GetCefView()->Apply( new CAscMenuEvent(ASC_MENU_EVENT_TYPE_ENCRYPTED_CLOUD_BUILD) );
+                return;
             } else
             if ( res == MODAL_RESULT_CUSTOM + 2 )
                 return;
