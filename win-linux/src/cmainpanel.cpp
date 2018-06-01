@@ -992,7 +992,7 @@ qDebug() << "send command to build document";
     }
 }
 
-void CMainPanel::onDocumentBuild(int vid, int error)
+void CMainPanel::onDocumentBuildFinished(int vid, int error)
 {
     int index = m_pTabs->tabIndexByView(vid);
     if ( error == 0 ) {
