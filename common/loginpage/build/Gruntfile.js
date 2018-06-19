@@ -6,7 +6,7 @@ module.exports = function(grunt) {
 
     grunt.loadNpmTasks('grunt-contrib-clean');
     grunt.loadNpmTasks('grunt-contrib-copy');
-    grunt.loadNpmTasks('grunt-contrib-uglify');
+    grunt.loadNpmTasks('grunt-contrib-uglify-es');
     grunt.loadNpmTasks('grunt-contrib-less');
     grunt.loadNpmTasks('grunt-contrib-concat');
     grunt.loadNpmTasks('grunt-contrib-htmlmin');
@@ -94,7 +94,7 @@ module.exports = function(grunt) {
                 separate_target: {
                     options: {
                         mangle: {
-                            sort: true
+                            // sort: true
                         }
                     },
                     files: {
