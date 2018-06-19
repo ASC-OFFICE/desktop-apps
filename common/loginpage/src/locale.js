@@ -99,6 +99,11 @@ l10n.en = {
     ,adsDescr2: 'Forget about sending files to be reviewed via email. Grant a quick access to the document without leaving your desktop editor. Let others suggest corrections. Accept or reject changes.'
     ,checkUpdates: 'Check for updates'
     ,strVersion: 'version'
+    ,actEncrypt: 'Secure mode'
+    ,encDescr: 'Use this mode to encrypt and protect your documents with password automatically'
+    ,encModeSimple: 'Simple'
+    ,encModeAdvanced: 'Advanced'
+    ,encModeSimpleDescr: 'Each local file you save will be automatically encrypted and protected with a password. Set the password using the fields below.'
 }
 
 l10n.cs = {

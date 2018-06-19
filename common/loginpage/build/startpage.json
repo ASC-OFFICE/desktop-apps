@@ -60,6 +60,7 @@
                     ,"../src/panelconnect.js"
                     ,"../src/panelabout.js"
                     ,"../src/panelwelcome.js"
+                    ,"../src/panelencrypt.js"
                     ,"../src/dlglogin.min.js"
                     ,"../src/panels.js"
                 ],

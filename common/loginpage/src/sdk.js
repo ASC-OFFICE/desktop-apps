@@ -87,5 +87,21 @@
         };
     };
 
+    sdk.setEncryptMode = function(mode, pass) {
+        sdk.SetCryptoMode(pass, mode);
+    };
+
+    sdk.encryptMode = function() {
+        return sdk.GetCryptoMode();
+    };
+
+    sdk.allowedEncryptModes = function() {
+        return sdk.GetSupportCryptoModes();
+    };
+
+    sdk.ENCRYPT_MODE_NONE = 0;
+    sdk.ENCRYPT_MODE_SIMPLE = 1;
+    sdk.ENCRYPT_MODE_ADVANCED = 2;
+
     window.sdk = sdk;
 }();

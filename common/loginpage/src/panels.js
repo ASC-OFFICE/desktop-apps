@@ -1,5 +1,5 @@
 /*
- * (c) Copyright Ascensio System SIA 2010-2017
+ * (c) Copyright Ascensio System SIA 2010-2018
  *
  * This program is a free software product. You can redistribute it and/or
  * modify it under the terms of the GNU Affero General Public License (AGPL)
@@ -42,6 +42,7 @@ $(document).ready(function() {
     window.app.controller.recent = (new ControllerRecent).init();
     window.app.controller.folders = (new ControllerFolders).init();
     window.app.controller.about = (new ControllerAbout).init();
+    window.app.controller.encrypt = (new ControllerEncrypt).init();
     if (!!window.ControllerPortals)
         window.app.controller.portals = (new ControllerPortals({})).init();
 
