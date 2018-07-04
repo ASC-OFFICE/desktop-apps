@@ -445,6 +445,11 @@ void CMainPanel::onTabsCountChanged(int count, int i, int d)
     QTimer::singleShot(200, [=]{
         RecalculatePlaces();
     });
+
+    QJsonObject _json_obj{ QPair<QString,QJsonValue>("count", count),
+                    QPair<QString,QJsonValue>("editors", m_pTabs->count(cvwtEditor)) };
+
+    AscAppManager::sendCommandTo(nullptr, "tabs:changed", Utils::encodeJson(_json_obj));
 }
 
 void CMainPanel::onEditorAllowedClose(int uid)
