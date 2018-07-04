@@ -149,6 +149,9 @@ public:
     void setStyleSheet(const QString&);
     QWidget * releaseEditor(int);
 
+    using QTabWidget::count;
+    int  count(int type) const;
+
     void updateScaling(int);
 protected:
     void resizeEvent(QResizeEvent* e);
