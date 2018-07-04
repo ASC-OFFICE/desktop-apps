@@ -23,6 +23,7 @@
 @import 'window.less';
 @import '../vendor/bootstrap/variables.less';
 @import '../vendor/bootstrap/dropdowns.less';
+@import 'component.less';
 
 * {
     box-sizing: border-box;
@@ -112,53 +113,6 @@ h4 {
     color: @color-gray-dark;
     font-size: 18px;
     font-weight: 600;
-}
-
-button {
-    /*width: 135px;*/
-    height: 36px;
-    color: #fff;
-    font-size: 14px;
-    outline: 0;
-    border: none 0;
-    cursor: pointer;
-    border-radius: @border-radius;
-    background-color: @color-gray-4;
-    padding: 0 36px;
-
-    &.primary {
-        background-color: @color-blue-light;
-
-        &:hover {
-            background-color: @color-blue-3;
-        }
-
-        &:active {
-            background-color: @color-blue-2;
-        }
-
-        &:disabled {
-            background-color: @color-blue-light;
-            color: #a7cff8;
-        }
-    }
-
-    &:hover {
-        background-color: @color-gray-6;
-    }
-
-    &:active {
-        background-color: @color-gray-5;
-    }
-
-    &:disabled {
-        background-color: @color-gray-4;
-        cursor: default;
-    }
-
-    .btn-quick {
-        background-color: transparent;
-    }
 }
 
 .text-sub {
@@ -782,27 +736,6 @@ li.menu-item {
     margin: 0 auto;
 }
 
-[tooltip]:before {
-    position : absolute;
-    content : attr(tooltip);
-    opacity : 0;
-
-    color: #444;
-    border: 1px solid rgba(0, 0, 0, 0.15);
-    background: #fff;
-    border-radius: 4px;
-    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.175);
-    padding: 5px 12px;
-    font-size: 11px;
-    z-index: 1;
-    transition: all .3s ease-in-out .25s;
-    pointer-evets:none;
-}
-
-[tooltip]:hover:before {
-    opacity : 1;
-}
-
 .logout {
     position: relative;
 
@@ -811,3 +744,9 @@ li.menu-item {
         top: -10px;
     }
 }
+
+}
+
+    position: relative;
+
+    }
