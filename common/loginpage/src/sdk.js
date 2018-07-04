@@ -95,7 +95,7 @@
         return sdk.GetCryptoMode();
     };
 
-    sdk.allowedEncryptModes = function() {
+    sdk.encryptModes = function() {
         return sdk.GetSupportCryptoModes();
     };
 

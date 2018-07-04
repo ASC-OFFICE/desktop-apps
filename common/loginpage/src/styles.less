@@ -254,6 +254,24 @@ li.menu-item {
             width: 100%;
             border-bottom: 0 none;
         }
+
+        &.new {
+            position: relative;
+
+            &:before {
+                content:'New';
+                position: absolute;
+                background-color: #ff730e;
+                display: block;
+                border-radius: 12px;
+                top: 50%;
+                transform: translateY(-50%);
+                font-size: 14px;
+                color: #fff;
+                right: 20px;
+                padding: 0 10px 1px;
+            }
+        }
     }
 }
 
@@ -745,8 +763,97 @@ li.menu-item {
     }
 }
 
+.box-radio-btn {
+    margin: 20px 0;
+
+    &[disabled] {
+        color: #999;
+    }
 }
 
-    position: relative;
+.box-radio-btn__content {
+    padding-left: 30px;
 
+    .box-radio-btn__content__elems {
+        overflow: hidden;
+        height: auto;
+        max-height: 300px;
+
+        transition: max-height 300ms;
+
+        &:not(.expanded) {
+            /*max-height: 0;*/
+        }
     }
+
+
+    input, textarea {
+        margin-bottom: 10px;
+        max-width: 300px;
+        display: block;
+
+        &.tbox--error {
+            border-color: red;
+        }
+    }
+
+    textarea {
+        color: #333333;
+        border: 1px solid #cbcbcb;
+        /*width: 100%;*/
+        outline: 0;
+        background: #fff;
+        font-size: 14px;
+        /*padding: 0 15px;*/
+        border-radius: 3px;
+        resize:none;
+    }
+}
+
+#enc-box-caption {
+    display: flex;
+    align-items: center;
+
+    .table-caption {
+        margin: 0;
+    }
+
+    .onoffswitch {
+        margin: 0 30px;
+    }
+}
+
+@color-error: #e82110;
+.box-warn {
+    display: none;
+    background-color: #ffde9f;
+    padding: 10px 10px 10px 20px;
+}
+
+.encrypt {
+    position: relative;
+    padding: 0;
+
+    .flexbox {
+        height: auto;
+        padding: 40px;
+    }
+
+    .box-warn__label {
+        margin: 0;
+        font-size: 14px;
+
+        &:before {
+            content: '!';
+            border: 1px solid #333;
+            border-radius: 10px;
+            display: inline-block;
+            padding: 0px 8px;
+            margin-right: 10px;        }
+    }
+}
+
+/*.box-heading {
+    overflow: auto;
+}
+*/

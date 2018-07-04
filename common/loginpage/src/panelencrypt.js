@@ -59,27 +59,25 @@
         var _opts = args.opts;
 
         var _lang = utils.Lang;
-        let _html = `<div class="flexbox">
+        let _html = `<div class='box-warn left-align'><p class='box-warn__label'>You must set a password</p></div>
+                    <div class="flexbox">
                         <div class='left-align'>
-                            <h3 class='table-caption'>${_lang.actEncrypt}</h3>
-                            <h4 class=''>${_lang.encDescr}</h4>
-                            <section><div class="onoffswitch">
-                                <input type="checkbox" name="onoffswitch" class="onoffswitch__checkbox" id="myonoffswitch">
-                                <label class="onoffswitch__label" for="myonoffswitch"></label>                                
-                            </div></section>
-                            <div class='box-radio-btn'>
-                                <input type='radio' name='encryptmode' value='off' id='enc-mode-none'>
-                                <label for='enc-mode-none'>None</label>
+                            <div id='enc-box-caption'>
+                                <h3 class='table-caption'>${_lang.actEncrypt}</h3>
+                                <div class="onoffswitch">
+                                    <input type="checkbox" name="onoffswitch" class="onoffswitch__checkbox" id="enc-mode-switch">
+                                    <label class="onoffswitch__label" for="enc-mode-switch"></label>
+                                </div>
                             </div>
+                            <h4 class='caption-description'>${_lang.encDescr}</h4>
                             <div class='box-radio-btn'>
                                 <input type='radio' name='encryptmode' value='simple' id='enc-mode-simple'>
                                 <label for='enc-mode-simple'>${_lang.encModeSimple}</label>
                                 <section id='enc-mode-simple-box-pass' class='box-radio-btn__content'>
                                     <p>${_lang.encModeSimpleDescr}</p>
                                     <div class='box-radio-btn__content__elems'>
-                                        <input class='tbox' type="password" placeholder='password'>
-                                        <input class='tbox' type="password" placeholder='repeat password'>
-                                        <button id='enc-apply-simple-pass' class="btn">Save</button>
+                                        <button class="btn" value='import'>Import key</button>
+                                        <button class="btn" value='export'>Export key</button>
                                     </div>
                                 </section>
                             </div>
@@ -99,6 +97,7 @@
 
         return _html;
     };
+
     ViewEncrypt.prototype.renderpanel = function(template) {
         this.$panel && this.$panel.empty();
         this.$panel.append(template);
@@ -107,46 +106,24 @@
     window.ControllerEncrypt = ControllerEncrypt;
 
     utils.fn.extend(ControllerEncrypt.prototype, (function(){
-        function onClickEncryptMode(event) {
-            let _mode = event.target.value;
-            switch ( _mode ) {
-            case 'adv': sdk.setEncryptMode(sdk.ENCRYPT_MODE_ADVANCED); 
-                break;
-            case 'simple':
-                let _el_pass = this.view.$panel.find('#enc-mode-simple-box-pass input[type=password]');
-                if ( _el_pass.get(0).value.length && _el_pass.get(0).value == _el_pass.get(1).value ) {
-                    sdk.setEncryptMode(sdk.ENCRYPT_MODE_SIMPLE, _el_pass.get(0).value);
-                    break;
-                } 
-            case 'off': sdk.setEncryptMode(sdk.ENCRYPT_MODE_NONE); break;
-            }
+        var $view;
 
-            if ( _mode == 'simple' ) {
-                this.view.$panel.find('#enc-mode-adv-box-pass > div')['removeClass']('expanded');
-                setTimeout(e => {
-                    this.view.$panel.find('#enc-mode-simple-box-pass > div')['addClass']('expanded');
-                }, 150);
-            } else
-            // if ( _mode == 'adv' ) 
-            {
-                this.view.$panel.find('#enc-mode-simple-box-pass > div')[_mode == 'simple'? 'addClass' : 'removeClass']('expanded');
-                this.view.$panel.find('#enc-mode-adv-box-pass > div')[_mode == 'adv'? 'addClass' : 'removeClass']('expanded');
-            } 
+        function onSwitchEncryptMode(e) {
+            let _active = this.view.$rbmode.filter(':checked'),
+                _mode = _active.val();
+
+            if ( e.target.checked ) {
+                _requestChangeMode(_mode + ':on');
+            } else _requestChangeMode(_mode + ':off');
+
+            e.target.checked = !e.target.checked;
         };
 
-        function onClickApplySimplePass() {
-            let _el_pass = this.view.$panel.find('#enc-mode-simple-box-pass input[type=password]');
-
-            if ( _el_pass.length ) {
-                _el_pass.removeClass('tbox--error');
-
-                if ( _el_pass.get(0).value.length ) {
-                    if ( _el_pass.get(0).value == _el_pass.get(1).value ) {
-                        sdk.setEncryptMode(sdk.ENCRYPT_MODE_SIMPLE, _el_pass.get(0).value);
-                    } else _el_pass.eq(1).addClass('tbox--error');
-                } else {
-                    _el_pass.addClass('tbox--error');
-                }
+        function onClickBtnSimplePass(e) {
+            if ( e.target.value == 'export' ) {
+                sdk.execCommand("encrypt:change", "simple:key:export");
+            } else {
+                sdk.execCommand("encrypt:change", "simple:key:import");
             }
         };
 
@@ -164,6 +141,127 @@
             }
         };
 
+        function _requestChangeMode(opts) {
+            window.sdk.execCommand("encrypt:change", opts);
+        };
+
+        function _turnModeOn(mode) {
+            let me = this;
+            switch (mode) {
+            case sdk.ENCRYPT_MODE_SIMPLE: {
+                sdk.setEncryptMode(sdk.ENCRYPT_MODE_SIMPLE);
+                break; }
+            case sdk.ENCRYPT_MODE_ADVANCED: {
+                let _el_pass = me.view.$panel.find('#enc-mode-adv-box-pass textarea');
+                sdk.setEncryptMode(sdk.ENCRYPT_MODE_ADVANCED, _el_pass.get(0).value);
+                break; }
+            }
+        };
+
+        function _processChangeMode(args) {
+            let me = this;
+
+            if ( /off/.test(args) ) {
+                if ( /\:allowed/.test(args) ) {
+                    sdk.setEncryptMode(sdk.ENCRYPT_MODE_NONE);
+                    me.view.$switch.prop('checked', false);
+                    _disableRadioButton(null, false);
+                } else {
+                    /* show error that action was refused */
+                    // me.view.$switch.prop('checked', true);
+                }
+            } else
+            if ( /on/.test(args) ) {
+                if ( /\:allowed/.test(args) ) {
+                    _turnModeOn.call( me, (/^simple\:/.test(args) ?
+                                    sdk.ENCRYPT_MODE_SIMPLE : sdk.ENCRYPT_MODE_ADVANCED) );
+
+                    me.view.$switch.prop('checked', true);
+                    _disableRadioButton();
+                } else {
+                    /* show error that action was refused */
+                    // me.view.$switch.prop('checked', false);
+                }
+            }
+        };
+
+        function _initPanel() {
+            var me = this;
+
+            me.view.$rbmode = me.view.$panel.find('input[type=radio]');
+
+            _disableRadioButton.call(me);
+
+            for ( let m of sdk.encryptModes() ) {
+                if ( m.type == sdk.ENCRYPT_MODE_SIMPLE ) {
+                    _disableRadioButton(me.view.$rbmode.filter('[value=simple]'), false);
+                } else
+                if ( m.type == sdk.ENCRYPT_MODE_ADVANCED ) {
+                    _disableRadioButton(me.view.$rbmode.filter('[value=adv]'), false);
+
+                    me.view.$panel.find('#enc-mode-adv-box-pass .box-radio-btn__content__elems').show();
+                }
+            }
+
+            me.view.$rbmode = me.view.$rbmode.filter(':not(:disabled)');
+
+            (me.view.$switch = me.view.$panel.find('input[type=checkbox]'))
+                .on('change', onSwitchEncryptMode.bind(me));
+
+            me.view.$panel.find('#enc-mode-simple-box-pass .btn').on('click', onClickBtnSimplePass.bind(me));
+            me.view.$panel.find('#enc-apply-adv-pass').on('click', onClickApplyAdvPass.bind(me));
+
+            switch ( sdk.encryptMode() ) {
+            // case sdk.ENCRYPT_MODE_NONE:
+            case sdk.ENCRYPT_MODE_SIMPLE:
+                me.view.$switch.prop('checked', true);
+                me.view.$rbmode.eq(0).prop('checked', true);
+                break;
+            case sdk.ENCRYPT_MODE_ADVANCED:
+                me.view.$switch.prop('checked', true);
+                me.view.$rbmode.eq(1).prop('checked', true);
+                break;
+            }
+
+            let _$checked = me.view.$rbmode.filter(':checked');
+            if ( !_$checked.length ) {
+                let _$active = me.view.$rbmode.filter(':not(:disabled)');
+                if ( _$active.length ) {
+                    (_$checked = _$active.eq(0)).prop('checked', true);
+                }
+            }
+
+            if ( me.view.$switch.get(0).checked )
+                _disableRadioButton.call(this);
+
+            // if ( _$checked.length ) {
+            //     if ( _$checked.val() == 'simple' ) {
+            //     } else
+            //     if ( _$checked.val() == 'adv' ) {
+            //     }
+            // }
+        };
+
+        function _showWarning(message) {
+            $view.$panel.find('.box-warn__label').html(message);
+            $view.$panel.find('.box-warn').show();
+        };
+
+        function _hideWarning() {
+            $view.$panel.find('.box-warn').hide();
+        };
+
+        function _disableRadioButton(btn, state = true) {
+            !btn && (btn = $view.$rbmode);
+            btn.parent().attr('disabled', state)
+                .find('input, button, textarea').attr('disabled', state);
+        };
+
+        function _disableModeSwitch(state=true) {
+            $view.$switch.attr('disabled', state)
+                    .parent().attr('disabled', state);
+        };
+
         return {
             init: function() {
                 baseController.prototype.init.apply(this, arguments);
@@ -173,44 +271,29 @@
                 window.sdk.on('on_native_message', (cmd, param) => {
                     if (/app\:ready/.test(cmd)) {
                         if ( !this.view ) {
-                            this.view = new ViewEncrypt(args);
+                            $view = this.view = new ViewEncrypt(args);
                             this.view.render();
-                        } 
 
-                        this.view.$panel.find('.box-radio-btn > input[type=simple]').parent().hide();
-                        this.view.$panel.find('.box-radio-btn > input[type=adv]').parent().hide();
-
-                        for ( let m of sdk.allowedEncryptModes() ) {
-                            if ( m.type == sdk.ENCRYPT_MODE_SIMPLE ) {
-                                this.view.$panel.find('.box-radio-btn > input[type=simple]').parent().show();
-
-                                if ( m.info_presented ) {
-                                    this.view.$panel.find('#enc-mode-simple-box-pass input[type=password]').val('_@#$$#@!$##$%&');
-                                }
-                            } else
-                            if ( m.type == sdk.ENCRYPT_MODE_ADVANCED ) {
-                                this.view.$panel.find('.box-radio-btn > input[type=adv]').parent().show();
-                            }
+                            this.view.renderpanel(this.view.paneltemplate(args));
+                            this.view.$menuitem.addClass('new');
                         }
 
-                        this.view.renderpanel(this.view.paneltemplate(args));
-                        let _$btns = this.view.$panel.find('input[type=radio]');
-                        _$btns.on('click change', onClickEncryptMode.bind(this));
-
-                        this.view.$panel.find('#enc-apply-simple-pass').on('click', onClickApplySimplePass.bind(this));
-                        this.view.$panel.find('#enc-apply-adv-pass').on('click', onClickApplyAdvPass.bind(this));
-
-                        switch ( sdk.encryptMode() ) {
-                        case sdk.ENCRYPT_MODE_NONE: _$btns.eq(0).prop('checked', true); break;
-                        case sdk.ENCRYPT_MODE_SIMPLE: _$btns.eq(1).prop('checked', true); break;
-                        case sdk.ENCRYPT_MODE_ADVANCED: _$btns.eq(2).prop('checked', true); break;
+                        _initPanel.call(this);
+                    } else
+                    if (/encrypt\:change/.test(cmd)) {
+                        _processChangeMode.call(this, param);
+                    } else
+                    if (/tabs:changed/.test(cmd)) {
+                        let json = JSON.parse(param);
+                        if ( !json.editors ) {
+                            _hideWarning();
+                            _disableRadioButton(null, false);
+                            _disableModeSwitch(false);
+                        } else {
+                            _showWarning('All opened documents must be closed to change security mode');
+                            _disableRadioButton();
+                            _disableModeSwitch();
                         }
-
-                        this.view.$panel.find('#enc-mode-simple-box-pass > div')[
-                            sdk.encryptMode() == sdk.ENCRYPT_MODE_SIMPLE ? 'addClass' : 'removeClass']('expanded');
-
-                        this.view.$panel.find('#enc-mode-adv-box-pass > div')[
-                            sdk.encryptMode() == sdk.ENCRYPT_MODE_ADVANCED ? 'addClass' : 'removeClass']('expanded');
                     }
                 });
 

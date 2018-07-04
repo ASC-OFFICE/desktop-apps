@@ -95,7 +95,7 @@ dialog {
    color: @color-gray-light;
 }
 
-.dlg-login {
+.dlg {
     .body {
         padding: 20px 30px 30px;
         /*text-align: center;*/
@@ -109,13 +109,28 @@ dialog {
         margin-top: 0;
     }
 
-    #btn-login, #btn-next {
-        margin-left: 30px;
-    }    
-
     .msg-error {
         font-size: 12px;
     }
+
+    .error-box {
+        height: 22px;
+    }
+
+    .combined {
+        margin: 0 15px 0 0;
+    }
+
+    .notice {
+        margin: 0;
+        line-height: 18px;
+    }
+}
+
+.dlg-login {
+    #btn-login, #btn-next {
+        margin-left: 30px;
+    }    
 
     .logo {
         margin: 10px 0 6px;
@@ -150,17 +165,8 @@ dialog {
         }
     }
 
-    .error-box {
-        height: 22px;
-    }
-
     .combined {
         margin: 0 15px 0 0;
-    }
-
-    .notice {
-        margin: 0;
-        line-height: 18px;
     }
 
     .timer {
@@ -208,47 +214,3 @@ dialog {
 .left-align {
     text-align: left;
 }
-
-.box-radio-btn {
-    margin: 20px 0;
-}
-
-.box-radio-btn__content {
-    padding-left: 30px;
-
-    .box-radio-btn__content__elems {
-        overflow: hidden;
-        height: auto;
-        max-height: 300px;
-
-        transition: max-height 300ms;
-
-        &:not(.expanded) {
-            max-height: 0;
-        }
-    }
-
-
-    input, textarea {
-        margin-bottom: 10px;
-        max-width: 300px;
-        display: block;
-
-        &.tbox--error {
-            border-color: red;
-        }
-    }
-
-    textarea {
-        color: #333333;
-        border: 1px solid #cbcbcb;
-        /*width: 100%;*/
-        outline: 0;
-        background: #fff;
-        font-size: 14px;
-        /*padding: 0 15px;*/
-        border-radius: 3px;
-        resize:none;
-    }
-}
-

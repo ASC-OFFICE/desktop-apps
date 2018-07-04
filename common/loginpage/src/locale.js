@@ -100,8 +100,8 @@ l10n.en = {
     ,checkUpdates: 'Check for updates'
     ,strVersion: 'version'
     ,actEncrypt: 'Secure mode'
-    ,encDescr: 'Use this mode to encrypt and protect your documents with password automatically'
-    ,encModeSimple: 'Simple'
+    ,encDescr: 'Use this modes to encrypt and protect your documents with password automatically'
+    ,encModeSimple: 'Personal'
     ,encModeAdvanced: 'Advanced'
     ,encModeSimpleDescr: 'Each local file you save will be automatically encrypted and protected with a password. Set the password using the fields below.'
 }
