@@ -81,7 +81,7 @@
                                     </div>
                                 </section>
                             </div>
-                            <div class='box-radio-btn'>
+                            <div class='box-radio-btn feature'>
                                 <input type='radio' name='encryptmode' value='std' id='enc-mode-std'>
                                 <label for='enc-mode-std'>${_lang.encModeStandard}</label>
                                 <section id='enc-mode-std-box-pass' class='box-radio-btn__content'>
@@ -92,7 +92,7 @@
                                     </div>
                                 </section>
                             </div>
-                            <div class='box-radio-btn'>
+                            <div class='box-radio-btn feature'>
                                 <input type='radio' name='encryptmode' value='adv' id='enc-mode-adv'>
                                 <label for='enc-mode-adv'>${_lang.encModeAdvanced}</label>
                                 <section id='enc-mode-adv-box-pass' class='box-radio-btn__content'>
@@ -213,6 +213,8 @@
                 if ( m.type == sdk.ENCRYPT_MODE_STANDARD ) {
                     _disableRadioButton(me.view.$rbmode.filter('[value=std]'), false);
                     me.view.$panel.find('#enc-mode-std-box-pass .box-radio-btn__content__elems').show();
+
+                    me.view.$rbmode.filter('[value=std]').parent().removeClass('feature');
                 } else
                 if ( m.type == sdk.ENCRYPT_MODE_ADVANCED ) {
                     _disableRadioButton(me.view.$rbmode.filter('[value=adv]'), false);
