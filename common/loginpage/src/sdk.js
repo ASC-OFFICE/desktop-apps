@@ -101,7 +101,8 @@
 
     sdk.ENCRYPT_MODE_NONE = 0;
     sdk.ENCRYPT_MODE_SIMPLE = 1;
-    sdk.ENCRYPT_MODE_ADVANCED = 2;
+    sdk.ENCRYPT_MODE_STANDARD = 2;
+    sdk.ENCRYPT_MODE_ADVANCED = 3;
 
     window.sdk = sdk;
 }();

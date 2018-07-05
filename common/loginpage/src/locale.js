@@ -103,6 +103,7 @@ l10n.en = {
     ,encDescr: 'Use this modes to encrypt and protect your documents with password automatically'
     ,encModeSimple: 'Personal'
     ,encModeAdvanced: 'Advanced'
+    ,encModeStandard: 'Standard'
     ,encModeSimpleDescr: 'Each local file you save will be automatically encrypted and protected with a password. Set the password using the fields below.'
 }
 

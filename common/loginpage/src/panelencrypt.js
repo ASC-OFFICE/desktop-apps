@@ -82,6 +82,17 @@
                                 </section>
                             </div>
                             <div class='box-radio-btn'>
+                                <input type='radio' name='encryptmode' value='standard' id='enc-mode-std'>
+                                <label for='enc-mode-std'>${_lang.encModeStandard}</label>
+                                <section id='enc-mode-std-box-pass' class='box-radio-btn__content'>
+                                    <p>Some options for standard mode</p>
+                                    <div class='box-radio-btn__content__elems' style='display:none;'>
+                                        <button class="btn" value='import'>Import key</button>
+                                        <button class="btn" value='export'>Export key</button>
+                                    </div>
+                                </section>
+                            </div>
+                            <div class='box-radio-btn'>
                                 <input type='radio' name='encryptmode' value='adv' id='enc-mode-adv'>
                                 <label for='enc-mode-adv'>${_lang.encModeAdvanced}</label>
                                 <section id='enc-mode-adv-box-pass' class='box-radio-btn__content'>
@@ -151,6 +162,9 @@
             case sdk.ENCRYPT_MODE_SIMPLE: {
                 sdk.setEncryptMode(sdk.ENCRYPT_MODE_SIMPLE);
                 break; }
+            case sdk.ENCRYPT_MODE_STANDARD:
+                sdk.setEncryptMode(sdk.ENCRYPT_MODE_STANDARD);
+                break;
             case sdk.ENCRYPT_MODE_ADVANCED: {
                 let _el_pass = me.view.$panel.find('#enc-mode-adv-box-pass textarea');
                 sdk.setEncryptMode(sdk.ENCRYPT_MODE_ADVANCED, _el_pass.get(0).value);
@@ -196,9 +210,12 @@
                 if ( m.type == sdk.ENCRYPT_MODE_SIMPLE ) {
                     _disableRadioButton(me.view.$rbmode.filter('[value=simple]'), false);
                 } else
+                if ( m.type == sdk.ENCRYPT_MODE_STANDARD ) {
+                    _disableRadioButton(me.view.$rbmode.filter('[value=std]'), false);
+                    me.view.$panel.find('#enc-mode-std-box-pass .box-radio-btn__content__elems').show();
+                } else
                 if ( m.type == sdk.ENCRYPT_MODE_ADVANCED ) {
                     _disableRadioButton(me.view.$rbmode.filter('[value=adv]'), false);
-
                     me.view.$panel.find('#enc-mode-adv-box-pass .box-radio-btn__content__elems').show();
                 }
             }
@@ -217,9 +234,13 @@
                 me.view.$switch.prop('checked', true);
                 me.view.$rbmode.eq(0).prop('checked', true);
                 break;
-            case sdk.ENCRYPT_MODE_ADVANCED:
+            case sdk.ENCRYPT_MODE_STANDARD:
                 me.view.$switch.prop('checked', true);
                 me.view.$rbmode.eq(1).prop('checked', true);
+                break;
+            case sdk.ENCRYPT_MODE_ADVANCED:
+                me.view.$switch.prop('checked', true);
+                me.view.$rbmode.eq(2).prop('checked', true);
                 break;
             }
 
