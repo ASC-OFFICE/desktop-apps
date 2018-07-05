@@ -82,7 +82,7 @@
                                 </section>
                             </div>
                             <div class='box-radio-btn'>
-                                <input type='radio' name='encryptmode' value='standard' id='enc-mode-std'>
+                                <input type='radio' name='encryptmode' value='std' id='enc-mode-std'>
                                 <label for='enc-mode-std'>${_lang.encModeStandard}</label>
                                 <section id='enc-mode-std-box-pass' class='box-radio-btn__content'>
                                     <p>Some options for standard mode</p>
