@@ -173,31 +173,31 @@ void CAscApplicationManagerWrapper::onCoreEvent(void * e)
             return;
         } else
         if ( cmd.compare(L"encrypt:change") == 0 ) {
-            QString args = QString::fromStdWString(pData->get_Param());
-            QRegularExpression re("simple:key:(\\w+)");
-            QRegularExpressionMatch match = re.match(args);
-            if ( match.hasMatch() ) {
-                CEncryptData * pData = new CEncryptData;
-                CFileDialogWrapper dlg(mainWindowFromViewId(_event->get_SenderId())->hWnd);
-                QString file;
-                if ( match.captured(1) == "import" ) {
-                    file = dlg.modalOpen(Utils::lastPath(LOCAL_PATH_OPEN), tr("Key File (*.key)"));
+            QTimer::singleShot(0, [=]{
+                QString args = QString::fromStdWString(pData->get_Param());
+                QRegularExpression re("simple:key:(\\w+)");
+                QRegularExpressionMatch match = re.match(args);
+                if ( match.hasMatch() ) {
+                    CEncryptData * pData = new CEncryptData;
+                    CFileDialogWrapper dlg(mainWindowFromViewId(_event->get_SenderId())->hWnd);
+                    QString file;
+                    if ( match.captured(1) == "import" ) {
+                        file = dlg.modalOpen(Utils::lastPath(LOCAL_PATH_OPEN), tr("Key File (*.key)"));
 
-                    if ( !file.isEmpty() ) {
-                        pData->put_Path(file.toStdWString());
-                        sendEvent(ASC_MENU_EVENT_TYPE_ENCRYPT_PERSONAL_KEY_IMPORT, pData);
+                        if ( !file.isEmpty() ) {
+                            pData->put_Path(file.toStdWString());
+                            sendEvent(ASC_MENU_EVENT_TYPE_ENCRYPT_PERSONAL_KEY_IMPORT, pData);
+                        }
+                    } else {
+                        file = Utils::lastPath(LOCAL_PATH_SAVE) + "/keyfile.key";
+                        if ( dlg.modalSaveAs(file) ) {
+                            pData->put_Path(file.toStdWString());
+                            sendEvent(ASC_MENU_EVENT_TYPE_ENCRYPT_PERSONAL_KEY_EXPORT, pData);
+                        }
                     }
+
+                    RELEASEINTERFACE(pData);
                 } else {
-                    file = Utils::lastPath(LOCAL_PATH_SAVE) + "/keyfile.key";
-                    if ( dlg.modalSaveAs(file) ) {
-                        pData->put_Path(file.toStdWString());
-                        sendEvent(ASC_MENU_EVENT_TYPE_ENCRYPT_PERSONAL_KEY_EXPORT, pData);
-                    }
-                }
-
-                RELEASEINTERFACE(pData);
-            } else {
-                QTimer::singleShot(0, [=]{
                     CMainWindow * _window = nullptr;
                     for (auto const& w : m_vecWidows) {
                         _window = reinterpret_cast<CMainWindow *>(w);
@@ -212,9 +212,9 @@ void CAscApplicationManagerWrapper::onCoreEvent(void * e)
 //                    broadcastEvent()
                     CMainWindow * w = mainWindowFromViewId(_event->get_SenderId());
                     w->mainPanel()->onEncryptMode(args.contains(":on"));
-                });
-            }
+                }
 
+            });
             return;
         }
 
