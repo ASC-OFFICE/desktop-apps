@@ -185,13 +185,13 @@ void CAscApplicationManagerWrapper::onCoreEvent(void * e)
 
                     if ( !file.isEmpty() ) {
                         pData->put_Path(file.toStdWString());
-                        sendEvent(ASC_MENU_EVENT_TYPE_ENCRYPT_PERSONAL_KEY_EXPORT, pData);
+                        sendEvent(ASC_MENU_EVENT_TYPE_ENCRYPT_PERSONAL_KEY_IMPORT, pData);
                     }
                 } else {
                     file = Utils::lastPath(LOCAL_PATH_SAVE) + "/keyfile.key";
                     if ( dlg.modalSaveAs(file) ) {
                         pData->put_Path(file.toStdWString());
-                        sendEvent(ASC_MENU_EVENT_TYPE_ENCRYPT_PERSONAL_KEY_IMPORT, pData);
+                        sendEvent(ASC_MENU_EVENT_TYPE_ENCRYPT_PERSONAL_KEY_EXPORT, pData);
                     }
                 }
 

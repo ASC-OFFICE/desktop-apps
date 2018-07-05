@@ -127,7 +127,7 @@ CMainPanel::CMainPanel(QWidget *parent, bool isCustomWindow, uchar dpi_ratio)
     connect(m_pTabs, &CAscTabWidget::editorInserted, bind(&CMainPanel::onTabsCountChanged, this, _2, _1, 1));
     connect(m_pTabs, &CAscTabWidget::editorRemoved, bind(&CMainPanel::onTabsCountChanged, this, _2, _1, -1));
 
-    QSize small_btn_size(28 * dpi_ratio, TOOLBTN_HEIGHT * dpi_ratio);
+//    QSize small_btn_size(28 * dpi_ratio, TOOLBTN_HEIGHT * dpi_ratio);
 //    QSize wide_btn_size(29*g_dpi_ratio, TOOLBTN_HEIGHT*g_dpi_ratio);
 
 #ifdef __linux__
@@ -165,7 +165,7 @@ CMainPanel::CMainPanel(QWidget *parent, bool isCustomWindow, uchar dpi_ratio)
     if (isCustomWindow) {
         palette.setColor(QPalette::Background, QColor(TABBAR_BACKGROUND_COLOR));
 
-        auto _creatToolButton = [small_btn_size](const QString& name, QWidget * parent) {
+        auto _creatToolButton = [](const QString& name, QWidget * parent) {
             QPushButton * btn = new QPushButton(parent);
             btn->setObjectName(name);
             btn->setProperty("class", "normal");

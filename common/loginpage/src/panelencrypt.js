@@ -97,7 +97,7 @@
                                 <label for='enc-mode-adv'>${_lang.encModeAdvanced}</label>
                                 <section id='enc-mode-adv-box-pass' class='box-radio-btn__content'>
                                     <p>Some options for advanced mode</p>
-                                    <div class='box-radio-btn__content__elems'>
+                                    <div class='box-radio-btn__content__elems' style='display:none'>
                                         <textarea rows='4' cols='50' spellcheck="false"></textarea>
                                         <button id='enc-apply-adv-pass' class="btn">Save</button>
                                     </div>
