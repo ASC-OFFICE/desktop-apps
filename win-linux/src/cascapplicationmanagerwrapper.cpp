@@ -209,6 +209,9 @@ void CAscApplicationManagerWrapper::onCoreEvent(void * e)
                     }
 
                     sendCommandTo(nullptr, QString::fromStdWString(cmd), args + ":allowed");
+//                    broadcastEvent()
+                    CMainWindow * w = mainWindowFromViewId(_event->get_SenderId());
+                    w->mainPanel()->onEncryptMode(args.contains(":on"));
                 });
             }
 

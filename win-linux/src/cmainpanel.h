@@ -37,6 +37,7 @@
 #include <QPushButton>
 #include <QHBoxLayout>
 #include <QSettings>
+#include <QLabel>
 
 #include "asctabwidget.h"
 #include "cdownloadwidget.h"
@@ -111,6 +112,7 @@ public slots:
     void onTabCloseRequest(int);
     void onAppCloseRequest();
     void onTabsCountChanged(int, int, int);
+    void onEncryptMode(bool);
 
     void onCloudDocumentOpen(std::wstring, int, bool);
     virtual void onDocumentReady(int);
@@ -167,7 +169,7 @@ private:
     QPushButton*    m_pButtonMinimize;
     QPushButton*    m_pButtonMaximize;
     QPushButton*    m_pButtonClose;
-    QPushButton*    m_pButtonProfile;
+    QLabel *        m_pIconEncrypt;
 
     QHBoxLayout *   m_layoutBtns;
     QWidget *       m_boxTitleBtns;

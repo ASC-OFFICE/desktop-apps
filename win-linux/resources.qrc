@@ -47,6 +47,7 @@
         <file alias="app.ico">res/icons/desktopeditors.ico</file>
         <file>res/icons/splash.png</file>
         <file>res/icons/splash_2x.png</file>
+        <file alias="encrypted.png">res/icons/shield.png</file>
     </qresource>
     <qresource prefix="/styles">
         <file>res/styles/styles.qss</file>

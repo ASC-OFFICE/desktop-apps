@@ -148,7 +148,13 @@ CMainPanel::CMainPanel(QWidget *parent, bool isCustomWindow, uchar dpi_ratio)
 
     layoutBtns->setContentsMargins(0,0,4*dpi_ratio,0);
     layoutBtns->setSpacing(1*dpi_ratio);
-    layoutBtns->addWidget(label);
+    layoutBtns->addWidget(label, 1);
+
+    m_pIconEncrypt = new QLabel(centralWidget);
+    m_pIconEncrypt->setPixmap(QPixmap(":/encrypted.png"));
+    m_pIconEncrypt->setStyleSheet("padding:0 10px 2px 0;");
+    m_pIconEncrypt->hide();
+    layoutBtns->addWidget(m_pIconEncrypt);
 
     // Main
     m_pButtonMain = new QPushButton( tr("FILE"), centralWidget );
@@ -1487,3 +1493,8 @@ bool CMainPanel::holdUrl(const QString& url, AscEditorType type) const
 }
 
 CAscTabWidget * CMainPanel::tabWidget(){return m_pTabs;}
+
+void CMainPanel::onEncryptMode(bool ison)
+{
+    ison ? m_pIconEncrypt->show() : m_pIconEncrypt->hide();
+}
