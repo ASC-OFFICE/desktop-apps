@@ -196,7 +196,7 @@ void CAscApplicationManagerWrapper::onCoreEvent(void * e)
                         }
                     }
 
-                    RELEASEINTERFACE(pData);
+//                    RELEASEINTERFACE(pData);
                 } else {
                     CMainWindow * _window = nullptr;
                     for (auto const& w : m_vecWidows) {
