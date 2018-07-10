@@ -223,36 +223,45 @@
                 }
             }
 
+            me.view.$switch = me.view.$panel.find('input[type=checkbox]');
             me.view.$rbmode = me.view.$rbmode.filter(':not(:disabled)');
+            if ( me.view.$rbmode.length ) {
+                me.view.$switch.on('change', onSwitchEncryptMode.bind(me));
 
-            (me.view.$switch = me.view.$panel.find('input[type=checkbox]'))
-                .on('change', onSwitchEncryptMode.bind(me));
+                me.view.$panel.find('#enc-mode-simple-box-pass .btn').on('click', onClickBtnSimplePass.bind(me));
+                me.view.$panel.find('#enc-apply-adv-pass').on('click', onClickApplyAdvPass.bind(me));
 
-            me.view.$panel.find('#enc-mode-simple-box-pass .btn').on('click', onClickBtnSimplePass.bind(me));
-            me.view.$panel.find('#enc-apply-adv-pass').on('click', onClickApplyAdvPass.bind(me));
-
-            switch ( sdk.encryptMode() ) {
-            // case sdk.ENCRYPT_MODE_NONE:
-            case sdk.ENCRYPT_MODE_SIMPLE:
-                me.view.$switch.prop('checked', true);
-                me.view.$rbmode.eq(0).prop('checked', true);
-                break;
-            case sdk.ENCRYPT_MODE_STANDARD:
-                me.view.$switch.prop('checked', true);
-                me.view.$rbmode.eq(1).prop('checked', true);
-                break;
-            case sdk.ENCRYPT_MODE_ADVANCED:
-                me.view.$switch.prop('checked', true);
-                me.view.$rbmode.eq(2).prop('checked', true);
-                break;
-            }
-
-            let _$checked = me.view.$rbmode.filter(':checked');
-            if ( !_$checked.length ) {
-                let _$active = me.view.$rbmode.filter(':not(:disabled)');
-                if ( _$active.length ) {
-                    (_$checked = _$active.eq(0)).prop('checked', true);
+                let _mode = 'none';
+                switch ( sdk.encryptMode() ) {
+                // case sdk.ENCRYPT_MODE_NONE:
+                case sdk.ENCRYPT_MODE_SIMPLE:
+                    _mode = 'simple';
+                    me.view.$rbmode.eq(0).prop('checked', true);
+                    break;
+                case sdk.ENCRYPT_MODE_STANDARD:
+                    _mode = 'standard';
+                    me.view.$rbmode.eq(1).prop('checked', true);
+                    break;
+                case sdk.ENCRYPT_MODE_ADVANCED:
+                    _mode = 'advanced';
+                    me.view.$rbmode.eq(2).prop('checked', true);
+                    break;
                 }
+
+                if ( _mode != 'none' ) {
+                    _mode = $view.$rbmode.filter(':checked').val();
+                    _requestChangeMode(_mode + ':on');
+                }
+
+                let _$checked = me.view.$rbmode.filter(':checked');
+                if ( !_$checked.length ) {
+                    let _$active = me.view.$rbmode.filter(':not(:disabled)');
+                    if ( _$active.length ) {
+                        (_$checked = _$active.eq(0)).prop('checked', true);
+                    }
+                }
+            } else {
+                me.view.$switch.attr('disabled', true);
             }
 
             if ( me.view.$switch.get(0).checked )
