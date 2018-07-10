@@ -86,10 +86,10 @@
                                 <label for='enc-mode-std'>${_lang.encModeStandard}</label>
                                 <section id='enc-mode-std-box-pass' class='box-radio-btn__content'>
                                     <p>Some options for standard mode</p>
-                                    <div class='box-radio-btn__content__elems' style='display:none;'>
+                                    <nav class='box-radio-btn__content__elems' style='display:none;'>
                                         <button class="btn" value='import'>Import key</button>
                                         <button class="btn" value='export'>Export key</button>
-                                    </div>
+                                    </nav>
                                 </section>
                             </div>
                             <div class='box-radio-btn feature'>
@@ -97,10 +97,10 @@
                                 <label for='enc-mode-adv'>${_lang.encModeAdvanced}</label>
                                 <section id='enc-mode-adv-box-pass' class='box-radio-btn__content'>
                                     <p>Some options for advanced mode</p>
-                                    <div class='box-radio-btn__content__elems' style='display:none'>
+                                    <nav class='box-radio-btn__content__elems' style='display:none'>
                                         <textarea rows='4' cols='50' spellcheck="false"></textarea>
                                         <button id='enc-apply-adv-pass' class="btn">Save</button>
-                                    </div>
+                                    </nav>
                                 </section>
                             </div>
                         </div>
@@ -120,7 +120,7 @@
         var $view;
 
         function onSwitchEncryptMode(e) {
-            let _active = this.view.$rbmode.filter(':checked'),
+            let _active = $view.$rbmode.filter(':checked'),
                 _mode = _active.val();
 
             if ( e.target.checked ) {
