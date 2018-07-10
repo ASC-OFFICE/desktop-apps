@@ -75,10 +75,10 @@
                                 <label for='enc-mode-simple'>${_lang.encModeSimple}</label>
                                 <section id='enc-mode-simple-box-pass' class='box-radio-btn__content'>
                                     <p>${_lang.encModeSimpleDescr}</p>
-                                    <div class='box-radio-btn__content__elems'>
+                                    <nav class='box-radio-btn__content__elems' style='display:none;'>
                                         <button class="btn" value='import'>Import key</button>
                                         <button class="btn" value='export'>Export key</button>
-                                    </div>
+                                    </nav>
                                 </section>
                             </div>
                             <div class='box-radio-btn feature'>
@@ -209,6 +209,7 @@
             for ( let m of sdk.encryptModes() ) {
                 if ( m.type == sdk.ENCRYPT_MODE_SIMPLE ) {
                     _disableRadioButton(me.view.$rbmode.filter('[value=simple]'), false);
+                    me.view.$panel.find('#enc-mode-simple-box-pass .box-radio-btn__content__elems').show();
                 } else
                 if ( m.type == sdk.ENCRYPT_MODE_STANDARD ) {
                     _disableRadioButton(me.view.$rbmode.filter('[value=std]'), false);
