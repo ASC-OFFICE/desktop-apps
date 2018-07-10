@@ -299,7 +299,15 @@
                             this.view.render();
 
                             this.view.renderpanel(this.view.paneltemplate(args));
-                            this.view.$menuitem.addClass('new');
+
+                            let _ls_item_name = 'secure-mode-used';
+                            if ( !localStorage[_ls_item_name] ) {
+                                $view.$menuitem.addClass('new');
+                                $view.$menuitem.one('click', e => {
+                                    $view.$menuitem.removeClass('new');
+                                    localStorage.setItem(_ls_item_name, 'got');
+                                });
+                            }
                         }
 
                         _initPanel.call(this);
